@@ -29,8 +29,8 @@ Rq25 – L'aplicació permet definir quins recintes s'utilitzaran
 Rq26 – L'aplicació permet diferenciar entre usuaris i admins
 Rq27 – L'aplicació farà un càlcul dels diners que costarà llogar un espai per l'estant
 Rq28 – Preu entrada
-Rq 29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
-Rq 30 – 
+Rq29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
+Rq30 – 
 
 
 
