@@ -1,0 +1,37 @@
+Requeriments Java
+
+Rq01 – Registre d'usuaris
+Rq02 – Modificació d'usuaris
+Rq03 – Eliminació d'usuaris
+Rq04 – Cerca d'usuaris ( només administrador)
+Rq05 – Llistat d'usuaris.
+Rq05 – Selecció de la localització de l'estant
+Rq06 – Registre empresa
+Rq07 – modificació d'empresa
+Rq08 – eliminació d'empresa (nomes admin)
+Rq09 – Cerca d'empreses
+Rq10 - Llistat empresa
+Rq11 – Alta d'elements per identificador
+Rq12 – Modificació d'elements per identificador
+Rq13 – Llistat d'elements per identificador
+Rq14 – Llistat de l''historial d'exposicions en rangs de dades 
+Rq15 – Cerca de l'historial d'exposicions en rangs de dades 
+Rq16 – L'aplicació divideix la superfície en plantes i números d'estants de forma automàtica.
+Rq17 – L'aplicació indica número d'estants que hi ha disponibles
+Rq18 – L'aplicació indica número d'estants que hi ha ocupats
+Rq19 – L'aplicació indica número d'estants que hi ha total
+Rq20 – L'aplicació permetrà registrar un estant sempre que hi hagi superficie
+Rq21 – L'aplicació permetrà com a màxim 1 estant per empresa.
+Rq22 – L'aplicació permet adherir categories al teu estant segons els productes que hi hagi
+Rq23 – L'aplicació permet definir més d'un recinte que s'utilitzarà 
+Rq24 – L'aplicació serà reescalable per qualsevol insitució.
+Rq25 – L'aplicació permet definir quins recintes s'utilitzaran
+Rq26 – L'aplicació permet diferenciar entre usuaris i admins
+Rq27 – L'aplicació farà un càlcul dels diners que costarà llogar un espai per l'estant
+Rq28 – Preu entrada
+Rq29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
+Rq30 – 
+marc gay
+
+
+classe fira, persona, estant, recinte, empresa, 
