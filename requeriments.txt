@@ -31,7 +31,7 @@ Rq27 – L'aplicació farà un càlcul dels diners que costarà llogar un espai 
 Rq28 – Preu entrada
 Rq29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
 Rq30 – 
-
+marc gay
 
 
 classe fira, persona, estant, recinte, empresa, 
