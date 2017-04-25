@@ -20,7 +20,6 @@ public class Estant {
         this.id = id;
     }
 
-
     public Estant(int id, String nom, String empresa, HashMap<String, Espais.Estants.Producte> producte, int ingressos) {
         this.id = id;
         Nom = nom;
