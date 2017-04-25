@@ -40,5 +40,7 @@ public class Planta {
         Estants = estants;
     }
 
-    public void createEstant(){}
+    public void createEstant(int id,int EstantId){
+        Estants.put(id,new Estant(EstantId));
+    }
 }

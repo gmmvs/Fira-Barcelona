@@ -38,4 +38,8 @@ public class Recinte {
     public void setEdificis(ArrayList<Edifici> edificis) {
         Edificis = edificis;
     }
+
+    public void addEdifici(){}
+
+    public void serEdifici(){}
 }
