@@ -40,4 +40,5 @@ public abstract class Usuari {
     public void setPasswd(String passwd) {
         Passwd = passwd;
     }
+
 }
