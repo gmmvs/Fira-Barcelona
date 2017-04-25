@@ -25,6 +25,8 @@ public abstract class Usuari {
         Nom = nom;
     }
 
+
+
     public String getUser() {
         return User;
     }
