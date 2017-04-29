@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Recinte {
 
     private String Nom;
-    private ArrayList<Edifici> Edificis;
+    private ArrayList<Edifici> Edificis =new ArrayList<>();
 
     public Recinte() {
     }
@@ -41,5 +41,19 @@ public class Recinte {
 
     public void addEdifici(Edifici edifici){
         Edificis.add(edifici);
+    }
+
+    public void delEdifici(Edifici edifici){
+        Edificis.remove(edifici);
+    }
+
+    public Edifici getEdifici(String id){
+        for (Edifici a :
+                Edificis) {
+            if (a.getId().equals(id)){
+                return a;
+            }
+        }
+        return null;
     }
 }

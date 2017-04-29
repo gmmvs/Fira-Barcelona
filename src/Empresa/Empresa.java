@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class Empresa{
     private String Nom;
     private ArrayList<Estant> Estants;
-    private ArrayList<AdministradorEmpresa> Administradors;
     private ArrayList<Treballador> Treballadors;
 
     public Empresa() {
@@ -38,18 +37,6 @@ public class Empresa{
 
     public void setEstants(ArrayList<Estant> estants) {
         Estants = estants;
-    }
-
-    public ArrayList<AdministradorEmpresa> getAdministradors() {
-        return Administradors;
-    }
-
-    public void setAdministradors(ArrayList<AdministradorEmpresa> administradors) {
-        Administradors = administradors;
-    }
-
-    public void setAdministrador(AdministradorEmpresa administrador) {
-        Administradors.add(administrador);
     }
 
     public void addTreballador(Treballador treballador){

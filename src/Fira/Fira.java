@@ -2,6 +2,7 @@ package Fira;
 
 import Espais.Recinte;
 import Empresa.Empresa;
+import Usuaris.AdministradorEmpresa;
 import Usuaris.Usuari;
 
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import java.util.HashMap;
 public class Fira {
     private static String Nom;
     private static Usuari Usuari;
-    private static HashMap<String, Empresa> Empresas;
-    private static HashMap<String,Recinte> Recintes;
+    private static HashMap<String,Empresa> Empresas = new HashMap<String, Empresa>();
+    private static HashMap<String,Recinte> Recintes = new HashMap<String, Recinte>();
+    private static HashMap<String,AdministradorEmpresa> AdministradorsEmpresa = new HashMap<String, AdministradorEmpresa>();
 
     public Fira() {
     }
@@ -58,13 +60,26 @@ public class Fira {
         Recintes = recintes;
     }
 
+    public static HashMap<String,AdministradorEmpresa> getAdministradors() {
+        return AdministradorsEmpresa;
+    }
+
+    public static void setAdministradors(HashMap<String,AdministradorEmpresa> administradors) {
+        AdministradorsEmpresa = administradors;
+    }
+
+    public static void addAdministrador(AdministradorEmpresa administrador) {
+        AdministradorsEmpresa.put(administrador.getUser(),administrador);
+    }
+
     public static void addEmpresa(Empresa empresa){
         Empresas.put(empresa.getNom(), empresa);
     }
 
-    public static void delEmpresa(String nom){
-        Empresas.remove(nom);
+    public static Empresa delEmpresa(String nom){
+        return Empresas.remove(nom);
     }
+
     public static void delRecinte(String nom){
         Recintes.remove(nom);
     }

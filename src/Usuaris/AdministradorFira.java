@@ -6,14 +6,19 @@ import Espais.Recinte;
 import Fira.Fira;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Marc Espinosa on 19/04/2017.
  */
 public class AdministradorFira extends Usuari {
 
-    public void addEmpresa(String nom1, ArrayList<Estant> estants, ArrayList<AdministradorEmpresa> administradors){
-        Empresa empresa = new Empresa(nom1,estants);
+
+    public AdministradorFira(String nom, String user, String passwd) {
+        super(nom, user, passwd);
+    }
+
+    public void addEmpresa(Empresa empresa){
         Fira.addEmpresa(empresa);
     }
 
@@ -30,9 +35,11 @@ public class AdministradorFira extends Usuari {
         Fira.delRecinte(nom);
     }
 
-    public void crearAdministradorEmpresa(String nom, String user, String passwd, Empresa Empresa){
-        AdministradorEmpresa AdminEmp = new AdministradorEmpresa(nom,user,passwd,Empresa);
+    public void addAdministradorEmpresa( AdministradorEmpresa admin){
+        Fira.addAdministrador(admin);
     }
 
-    public void delAdministradorEmpresa(){}
+    public void delAdministradorEmpresa(String User){
+        Fira.getAdministradors().remove(User);
+    }
 }
