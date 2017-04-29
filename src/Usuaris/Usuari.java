@@ -3,7 +3,9 @@ package Usuaris;
 /**
  * Created by Marc Espinosa on 19/04/2017.
  */
+
 public abstract class Usuari {
+
     private String Nom;
     private String User;
     private String Passwd;
