@@ -10,6 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by Marc Espinosa on 19/04/2017.
  */
+
 public class Empresa{
     private String Nom;
     private ArrayList<Estant> Estants;
@@ -21,6 +22,14 @@ public class Empresa{
     public Empresa(String nom1, ArrayList<Estant> estants) {
         Nom = nom1;
         Estants = estants;
+    }
+
+    public ArrayList<Treballador> getTreballadors() {
+        return Treballadors;
+    }
+
+    public void setTreballadors(ArrayList<Treballador> treballadors) {
+        Treballadors = treballadors;
     }
 
     public String getNom() {

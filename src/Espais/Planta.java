@@ -2,6 +2,7 @@ package Espais;
 
 import Espais.Estants.Estant;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -42,5 +43,16 @@ public class Planta {
 
     public void createEstant(int EstantId){
         Estants.put(EstantId,new Estant(EstantId));
+    }
+
+    public ArrayList<Integer> getEstantsBuits(){
+        ArrayList<Integer> Buits = new ArrayList<>();
+        for (int a : Estants.keySet()) {
+            if (Estants.get(a).getEmpresa()==null){
+                Buits.add(a);
+            }
+        }
+
+        return Buits;
     }
 }

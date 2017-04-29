@@ -8,11 +8,20 @@ import java.util.HashMap;
 /**
  * Created by Marc Espinosa on 19/04/2017.
  */
+
 public class AdministradorEmpresa extends Usuari {
     String nomEmpresa;
 
     public AdministradorEmpresa(String nom, String user, String passwd, String nomEmpresa) {
         super(nom, user, passwd);
+        this.nomEmpresa = nomEmpresa;
+    }
+
+    public String getNomEmpresa() {
+        return nomEmpresa;
+    }
+
+    public void setNomEmpresa(String nomEmpresa) {
         this.nomEmpresa = nomEmpresa;
     }
 
@@ -28,5 +37,7 @@ public class AdministradorEmpresa extends Usuari {
         empresa.delTreballador(treballador);
     }
 
-    public void selEstant(){}
+    public void selEstant(){
+
+    }
 }

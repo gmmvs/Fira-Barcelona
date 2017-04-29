@@ -21,6 +21,8 @@ public class Principal {
     private static AdministradorFira Admin = new AdministradorFira("Administrador Fira","AdminFira","1234");
 
     public static void main(String args[]) {
+        Fira.addAdministrador(new AdministradorEmpresa("Smith","AdminEmp","1234","I-Mas"));
+
         int opcio = 0;
         try {
             do {
@@ -41,7 +43,11 @@ public class Principal {
                             }
                         break;
                     case 2:
-                        //consultarAlumnes();
+                        try{
+                            validarAdminEmp();
+                        }catch (InputMismatchException ex){
+                            System.out.println("Opció Erronea");
+                        }
                         break;
                     case 3:
                         entrada = new Scanner(System.in);
@@ -79,6 +85,33 @@ public class Principal {
             }else {
                 System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
             }
+    }
+
+    public static void validarAdminEmp(){
+        String Usuari;
+        String Contrasenya;
+        int match=0;
+
+        System.out.println("Usuari:");
+        Scanner entrada = new Scanner(System.in);
+        Usuari = entrada.nextLine();
+
+        System.out.println("Contrasenya:");
+        entrada = new Scanner(System.in);
+        Contrasenya = entrada.nextLine();
+
+        HashMap<String,AdministradorEmpresa> Admins = Fira.getAdministradors();
+        for (String a : Admins.keySet()) {
+            if (a.equals(Usuari)){
+                if (Admins.get(a).getPasswd().equals(Contrasenya))
+                    match = 1;
+                    menuAdminEmp(Admins.get(a));
+            }
+        }
+        if (match == 0){
+        }else {
+            System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
+        }
     }
 
     public static void menuAdminFira(){
@@ -205,7 +238,7 @@ public class Principal {
                         System.out.println("Nom Empresa:");
                         entrada = new Scanner(System.in);
                         Nom = entrada.nextLine();
-                        if (Fira.delEmpresa(Nom) != null) {
+                        if (Admin.delEmpresa(Nom) != null) {
                             System.out.print("S'ha borrat Correctament");
                         }
                         break;
@@ -229,10 +262,92 @@ public class Principal {
             }catch (InputMismatchException ex){
                 System.out.println("opció incorrecta.");
             }catch (NullPointerException ex){
-                System.out.println("No n'hi ha cap constancia.");
+                System.out.println("No n'hi ha constancia.");
             }
         } while (opcio != 8);
 
+    }
+
+    public static void menuAdminEmp(AdministradorEmpresa AdminEmp){
+        int opcio=0;
+        do {
+            try {
+
+                System.out.println("1. Selecciona Estant");
+                System.out.println("2. Consulta tots els alumnes");
+                System.out.println("3. Consulta alumnes segons nota");
+                System.out.println("4. Surt");
+                Scanner entrada = new Scanner(System.in);
+                opcio = entrada.nextInt();
+
+                switch (opcio) {
+                    case 1:
+                        Set<String> Recintes = Fira.getRecintes().keySet();
+                        System.out.println("Escull un Recinte:");
+                        for (String a : Recintes) {
+                            System.out.println(a);
+                        }
+                        entrada = new Scanner(System.in);
+                        String Recinte = entrada.nextLine();
+                        if (!Recintes.contains(Recinte))
+                            throw new NullPointerException();
+                        System.out.println("Escull un Nº d'Edifici:");
+                        Recinte recinte = Fira.getRecintes().get(Recinte);
+                        ArrayList<Edifici> Edificis = recinte.getEdificis();
+                        int sEdifici = 0;
+                        for (Edifici a : Edificis) {
+                            System.out.println(sEdifici+". "+a.getId());
+                            sEdifici++;
+                        }
+                        entrada = new Scanner(System.in);
+                        int Edifici = entrada.nextInt();
+                        System.out.println("Escull un Nº de Planta:");
+                        ArrayList<Planta> Plantes = Edificis.get(Edifici).getPlantes();
+                        ArrayList<Integer> b;
+                        int sPlanta = 0;
+                        for (Planta a : Plantes) {
+                            b = a.getEstantsBuits();
+                            System.out.println(sPlanta+". Planta: "+a.getNum()+" Estants Disponibles: "+b.size());
+                            sPlanta++;
+                        }
+                        entrada = new Scanner(System.in);
+                        int Planta = entrada.nextInt();
+                        Planta pPlanta = Plantes.get(Planta);
+                        b = pPlanta.getEstantsBuits();
+                        System.out.println("Escull un Nº d'Estant:");
+                        for (int a : b) {
+                            System.out.println(a);
+                        }
+                        entrada = new Scanner(System.in);
+                        int Estant = entrada.nextInt();
+
+                        System.out.println("Nom Estant:");
+                        entrada = new Scanner(System.in);
+                        String nomEstant = entrada.nextLine();
+
+                        Estant estant = pPlanta.getEstants().get(Estant);
+                        estant.setEmpresa(AdminEmp.getNomEmpresa());
+                        estant.setNom(nomEstant);
+                        System.out.println("Estant Creat");
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+                        break;
+                    default:
+                        System.out.println("opció incorrecta");
+                        break;
+                }
+            } catch (InputMismatchException ex){
+                System.out.println("Entrada incorrecta.");
+            }catch (NullPointerException ex){
+                System.out.println("No n'hi ha constancia.");
+            }
+        } while (opcio != 4) ;
     }
 
     /*public static void menu() {

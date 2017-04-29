@@ -22,8 +22,8 @@ public class AdministradorFira extends Usuari {
         Fira.addEmpresa(empresa);
     }
 
-    public void delEmpresa(String nom){
-        Fira.delEmpresa(nom);
+    public Empresa delEmpresa(String nom){
+        return Fira.delEmpresa(nom);
     }
 
     public void addRecinte(String nom){

@@ -18,6 +18,7 @@ public class Fira {
     private static HashMap<String,Recinte> Recintes = new HashMap<String, Recinte>();
     private static HashMap<String,AdministradorEmpresa> AdministradorsEmpresa = new HashMap<String, AdministradorEmpresa>();
 
+
     public Fira() {
     }
 
