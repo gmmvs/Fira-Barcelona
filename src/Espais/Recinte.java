@@ -39,7 +39,7 @@ public class Recinte {
         Edificis = edificis;
     }
 
-    public void addEdifici(){}
-
-    public void serEdifici(){}
+    public void addEdifici(Edifici edifici){
+        Edificis.add(edifici);
+    }
 }
