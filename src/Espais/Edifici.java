@@ -38,5 +38,9 @@ public class Edifici {
         Plantes = plantes;
     }
 
-    public void addPlanta(){}
+    public void addPlanta(){
+        Planta P1 = new Planta(1);
+        P1.createEstant(1,1);
+        Plantes.add(P1);
+    }
 }

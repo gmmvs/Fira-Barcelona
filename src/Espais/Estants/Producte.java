@@ -7,13 +7,15 @@ public class Producte {
 
     private String id;
     private String Nom;
+    private Double Preu;
 
     public Producte() {
     }
 
-    public Producte(String id, String nom) {
+    public Producte(String id, String nom, Double preu) {
         this.id = id;
         Nom = nom;
+        this.Preu=preu;
     }
 
     public String getId() {
@@ -30,5 +32,13 @@ public class Producte {
 
     public void setNom(String nom) {
         Nom = nom;
+    }
+
+    public Double getPreu() {
+        return Preu;
+    }
+
+    public void setPreu(double preu) {
+        Preu = preu;
     }
 }
