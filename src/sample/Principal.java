@@ -3,11 +3,13 @@ package sample;
 import Empresa.Empresa;
 import Espais.Edifici;
 import Espais.Estants.Estant;
+import Espais.Estants.Producte;
 import Espais.Planta;
 import Espais.Recinte;
 import Fira.Fira;
 import Usuaris.AdministradorEmpresa;
 import Usuaris.AdministradorFira;
+import Usuaris.ImplTreballador;
 import sun.security.util.Password;
 
 import java.io.IOException;
@@ -36,11 +38,11 @@ public class Principal {
 
                 switch (opcio) {
                     case 1:
-                            try{
-                                validarAdminFira();
-                            }catch (InputMismatchException ex){
-                                System.out.println("Opció Erronea");
-                            }
+                        try{
+                            validarAdminFira();
+                        }catch (InputMismatchException ex){
+                            System.out.println("Opció Erronea");
+                        }
                         break;
                     case 2:
                         try{
@@ -50,21 +52,27 @@ public class Principal {
                         }
                         break;
                     case 3:
-                        entrada = new Scanner(System.in);
-                        System.out.println("nota:");
-                        String condicio = entrada.nextLine();
-                        //consultarAlumnes(condicio);
+                        try{
+                            validarTreballador();
+                        }catch (InputMismatchException ex){
+                            System.out.println("Opció Erronea");
+                        }
                         break;
                     case 4:
                         break;
                     default:
-                        System.out.println("opció incorrecta");
+                        System.out.println("Opció incorrecta");
                         break;
                 }
-               // menu();
             }while (opcio != 4);
         } catch (InputMismatchException ex) {
             System.out.println("Opció Erronea");
+        }catch (NullPointerException ex){
+            System.out.println("No n'hi ha cap constancia.");
+        }catch (NoSuchElementException ex){
+            System.out.println("Error al ecanejar.");
+        }catch (IllegalStateException ex){
+            System.out.println("No es permet escanejar.");
         }
     }
 
@@ -109,7 +117,36 @@ public class Principal {
             }
         }
         if (match == 0){
-        }else {
+            System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
+        }
+    }
+
+    public static void validarTreballador(){
+        String Usuari;
+        String Contrasenya;
+        int match=0;
+
+        System.out.println("Usuari:");
+        Scanner entrada = new Scanner(System.in);
+        Usuari = entrada.nextLine();
+
+        System.out.println("Contrasenya:");
+        entrada = new Scanner(System.in);
+        Contrasenya = entrada.nextLine();
+
+        ArrayList<ImplTreballador> treballadors = new ArrayList<>();
+
+        HashMap<String,Empresa> Empresas = Fira.getEmpresas();
+        for (String a : Empresas.keySet()) {
+            for (ImplTreballador treb : Empresas.get(a).getTreballadors()) {
+                if (treb.getUser().equals(Usuari)){
+                    match = 1;
+                    menuTreballadors(treb);
+                }
+            }
+        }
+
+        if (match == 0){
             System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
         }
     }
@@ -151,6 +188,8 @@ public class Principal {
                         System.out.println("Recintes existent:");
                         HashMap<String, Recinte> recintes = Fira.getRecintes();
                         ArrayList<String> NRecintes = new ArrayList<>();
+                        if (recintes.keySet().size()<1)
+                            throw new NullPointerException();
                         for (String a : recintes.keySet()){
                             System.out.println(a);
                             NRecintes.add(a);
@@ -263,6 +302,10 @@ public class Principal {
                 System.out.println("opció incorrecta.");
             }catch (NullPointerException ex){
                 System.out.println("No n'hi ha constancia.");
+            }catch (NoSuchElementException ex){
+                System.out.println("Error al ecanejar.");
+            }catch (IllegalStateException ex){
+                System.out.println("No es permet escanejar.");
             }
         } while (opcio != 8);
 
@@ -274,9 +317,11 @@ public class Principal {
             try {
 
                 System.out.println("1. Selecciona Estant");
-                System.out.println("2. Consulta tots els alumnes");
-                System.out.println("3. Consulta alumnes segons nota");
-                System.out.println("4. Surt");
+                System.out.println("2. Afegeix Producte");
+                System.out.println("3. Esborra Producte");
+                System.out.println("4. Afegeix Treballador");
+                System.out.println("5. Esborra Treballador");
+                System.out.println("6. Surt");
                 Scanner entrada = new Scanner(System.in);
                 opcio = entrada.nextInt();
 
@@ -301,7 +346,7 @@ public class Principal {
                         }
                         entrada = new Scanner(System.in);
                         int Edifici = entrada.nextInt();
-                        System.out.println("Escull un Nº de Planta:");
+                        System.out.println("Escull un Nº de Planta per Numero de Llista:");
                         ArrayList<Planta> Plantes = Edificis.get(Edifici).getPlantes();
                         ArrayList<Integer> b;
                         int sPlanta = 0;
@@ -326,17 +371,99 @@ public class Principal {
                         String nomEstant = entrada.nextLine();
 
                         Estant estant = pPlanta.getEstants().get(Estant);
-                        estant.setEmpresa(AdminEmp.getNomEmpresa());
-                        estant.setNom(nomEstant);
+                        AdminEmp.selEstant(nomEstant,estant);
                         System.out.println("Estant Creat");
                         break;
                     case 2:
-
+                        Empresa empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
+                        System.out.println("Escull Nº d'estant:");
+                        int nEstant = 0;
+                        for (Estant a : empresa.getEstants()) {
+                            System.out.println(nEstant+". "+a.getNom());
+                            nEstant++;
+                        }
+                        entrada = new Scanner(System.in);
+                        int sEstant = entrada.nextInt();
+                        Estant estantSel = empresa.getEstants().get(sEstant);
+                        System.out.println("Nom Producte:");
+                        entrada = new Scanner(System.in);
+                        String Nom = entrada.nextLine();
+                        System.out.println("Preu Producte (ex:X.XX):");
+                        entrada = new Scanner(System.in);
+                        double preu = entrada.nextDouble();
+                        estantSel.addProducte(new Producte(Nom,Nom,preu));
+                        System.out.println("Producte Inserit");
                         break;
                     case 3:
+                        empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
+                        System.out.println("Escull Nº d'estant:");
+                        nEstant = 0;
+                        for (Estant a : empresa.getEstants()) {
+                            System.out.println(" |-"+nEstant+". "+a.getNom());
+                        }
+                        entrada = new Scanner(System.in);
+                        sEstant = entrada.nextInt();
+                        estantSel = empresa.getEstants().get(sEstant);
+                        System.out.println("Nom Producte:");
+                        for (String a : estantSel.getProducte().keySet()) {
+                            System.out.println(" |-"+a);
+                        }
+                        entrada = new Scanner(System.in);
+                        String nProducte = entrada.nextLine();
+                        if (estantSel.getProducte().containsKey(nProducte)) {
+                            estantSel.delProducte(nProducte);
+                            System.out.println("Producte Eliminat");
+                        }else
+                            System.out.println("Nom Erroni");
 
                         break;
                     case 4:
+                        empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
+                        System.out.println("Escull Nº d'estant:");
+                        nEstant = 0;
+                        for (Estant a : empresa.getEstants()) {
+                            System.out.println(" |- "+nEstant+". "+a.getNom());
+                            nEstant++;
+                        }
+                        entrada = new Scanner(System.in);
+                        sEstant = entrada.nextInt();
+                        estantSel = empresa.getEstants().get(sEstant);
+                        System.out.println("Nom Treballador:");
+                        entrada = new Scanner(System.in);
+                        Nom = entrada.nextLine();
+                        System.out.println("Usuari Treballador:");
+                        entrada = new Scanner(System.in);
+                        String Usuari = entrada.nextLine();
+                        System.out.println("Pass Treballador:");
+                        entrada = new Scanner(System.in);
+                        String Pass = entrada.nextLine();
+                        ImplTreballador treballador = new ImplTreballador(Nom,Usuari,Pass);
+                        treballador.setRespEstant(estantSel);
+                        Fira.getEmpresas().get(AdminEmp.getNomEmpresa()).getTreballadors().add(treballador);
+                        System.out.println("Treballador Creat Correctament");
+                        break;
+                    case 5:
+                        System.out.println("Usuari Treballador:");
+                        entrada = new Scanner(System.in);
+                        Usuari = entrada.nextLine();
+                        ArrayList<ImplTreballador> treballadors = Fira.getEmpresas().get(AdminEmp.getNomEmpresa()).getTreballadors();
+                        int n1 = 0;
+                        int match = 0;
+                        for (ImplTreballador treballador1: treballadors) {
+
+                            if (treballador1.getUser().equals(Usuari)){
+                                match = n1;
+                            }
+                        }
+                        if (match != 0){
+                            treballadors.remove(treballadors.get(n1));
+                            System.out.println("Treballador Esborrat Correctament");
+                        }else{
+                            System.out.println("Treballador No Existeix");
+                        }
+
+                        break;
+                    case 6:
                         break;
                     default:
                         System.out.println("opció incorrecta");
@@ -346,50 +473,93 @@ public class Principal {
                 System.out.println("Entrada incorrecta.");
             }catch (NullPointerException ex){
                 System.out.println("No n'hi ha constancia.");
+            }catch (NoSuchElementException ex){
+                System.out.println("Error al ecanejar.");
+            }catch (IllegalStateException ex){
+                System.out.println("No es permet escanejar.");
+            }catch (IndexOutOfBoundsException ex){
+                System.out.println("No n'hi ha constancia.");
             }
-        } while (opcio != 4) ;
+        } while (opcio != 6) ;
     }
 
-    /*public static void menu() {
+    public static void menuTreballadors(ImplTreballador Treballador){
+        int opcio = 0;
+        int nEstant;
 
-        int opcio;
         do {
-            System.out.println("1. Afegeix alumne");
-            System.out.println("2. Consulta tots els alumnes");
-            System.out.println("3. Consulta alumnes segons nota");
-            System.out.println("4. Surt");
+            try {
+                System.out.println("1. Efectuar Ingres");
+                System.out.println("2. Efectuar Despesa");
+                System.out.println("3. Surt");
+                Scanner entrada = new Scanner(System.in);
+                opcio = entrada.nextInt();
+                ArrayList<Estant> estants = Treballador.getRespEstant();
+
+                switch (opcio) {
+                    case 1:
+                        System.out.println("Selecciona Estant: ");
+
+                        for (int n = 0; n < estants.size(); n++) {
+                            System.out.println("|-" + n + " " + estants.get(n).getNom());
+                        }
+                        entrada = new Scanner(System.in);
+                        nEstant = entrada.nextInt();
+                        Estant estant = estants.get(nEstant);
+                        estant.setIngressos(estant.getIngressos() + EfectuarCompra(estant));
+                        break;
+                    case 2:
+                        System.out.println("Selecciona Estant: ");
+
+                        for (int n = 0; n < estants.size(); n++) {
+                            System.out.println("|-" + n + " " + estants.get(n).getNom());
+                        }
+                        entrada = new Scanner(System.in);
+                        nEstant = entrada.nextInt();
+                        estant = estants.get(nEstant);
+                        estant.setIngressos(estant.getIngressos() - EfectuarCompra(estant));
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        System.out.println("opció incorrecta");
+                        break;
+                }
+            } catch (InputMismatchException ex){
+            System.out.println("Entrada incorrecta.");
+            }catch (NullPointerException ex){
+            System.out.println("No n'hi ha constancia.");
+            }catch (NoSuchElementException ex){
+            System.out.println("Error al esanejar.");
+            }catch (IllegalStateException ex){
+            System.out.println("No es permet escanejar.");
+            }
+        } while (opcio != 3);
+
+    }
+
+    public static double EfectuarCompra(Estant estant){
+
+    int opcio = 0;
+    int q = estant.getProducte().size();
+    double money = 0;
+    ArrayList<String> productes;
+
+        do {
+            int n = 0;
+            System.out.println("Selecciona Productes:");
+            productes = new ArrayList<String>();
+            for (String prod: estant.getProducte().keySet()) {
+                System.out.println("|- "+n+". "+prod);
+                productes.add(prod);
+                n++;
+            }
+            System.out.println("-"+n+"Nar A Caixa.");
             Scanner entrada = new Scanner(System.in);
             opcio = entrada.nextInt();
+            money+=estant.getProducte().get(productes.get(n)).getPreu();
+        } while (opcio != q);
 
-            switch (opcio) {
-                case 1:
-                    System.out.print("codi:");
-                    entrada = new Scanner(System.in);
-                    int codi = entrada.nextInt();
-                    entrada = new Scanner(System.in);
-                    System.out.print("nom:");
-                    String nom = entrada.nextLine();
-                    entrada = new Scanner(System.in);
-                    System.out.print("nota:");
-                    float nota = entrada.nextFloat();
-                    afegirAlumne(codi, nom, nota);
-                    break;
-                case 2:
-                    consultarAlumnes();
-                    break;
-                case 3:
-                    entrada = new Scanner(System.in);
-                    System.out.print("nota:");
-                    String condicio = entrada.nextLine();
-                    consultarAlumnes(condicio);
-                    break;
-                case 4:
-                    conn.close();
-                    break;
-                default:
-                    System.out.println("opció incorrecta");
-                    break;
-            }
-        } while (opcio != 4);
-    }*/
+        return money;
+    }
 }

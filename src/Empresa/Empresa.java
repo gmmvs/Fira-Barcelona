@@ -2,6 +2,7 @@ package Empresa;
 
 import Espais.Estants.Estant;
 import Usuaris.AdministradorEmpresa;
+import Usuaris.ImplTreballador;
 import Usuaris.Treballador;
 import Usuaris.Usuari;
 
@@ -13,8 +14,8 @@ import java.util.ArrayList;
 
 public class Empresa{
     private String Nom;
-    private ArrayList<Estant> Estants;
-    private ArrayList<Treballador> Treballadors;
+    private ArrayList<Estant> Estants = new ArrayList<Estant>();
+    private ArrayList<ImplTreballador> Treballadors = new ArrayList<ImplTreballador>();
 
     public Empresa() {
     }
@@ -24,11 +25,11 @@ public class Empresa{
         Estants = estants;
     }
 
-    public ArrayList<Treballador> getTreballadors() {
+    public ArrayList<ImplTreballador> getTreballadors() {
         return Treballadors;
     }
 
-    public void setTreballadors(ArrayList<Treballador> treballadors) {
+    public void setTreballadors(ArrayList<ImplTreballador> treballadors) {
         Treballadors = treballadors;
     }
 
@@ -48,11 +49,11 @@ public class Empresa{
         Estants = estants;
     }
 
-    public void addTreballador(Treballador treballador){
+    public void addTreballador(ImplTreballador treballador){
         Treballadors.add(treballador);
     }
 
-    public void delTreballador(Treballador treballador){
+    public void delTreballador(ImplTreballador treballador){
         Treballadors.remove(treballador);
     }
 

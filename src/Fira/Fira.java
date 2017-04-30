@@ -3,6 +3,8 @@ package Fira;
 import Espais.Recinte;
 import Empresa.Empresa;
 import Usuaris.AdministradorEmpresa;
+import Usuaris.ImplTreballador;
+import Usuaris.Treballador;
 import Usuaris.Usuari;
 
 import java.util.ArrayList;
