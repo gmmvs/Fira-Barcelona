@@ -14,8 +14,8 @@ public class ImplTreballador extends Usuari implements Treballador{
     public ImplTreballador() {
     }
 
-    public ImplTreballador(String nom, String user, String passwd) {
-        super(nom, user, passwd);
+    public ImplTreballador(String user, String passwd) {
+        super(user, passwd);
     }
 
     public void setRespEstant(Estant estant){

@@ -13,9 +13,10 @@ import java.util.HashMap;
  */
 public class AdministradorFira extends Usuari {
 
+    public AdministradorFira() {}
 
-    public AdministradorFira(String nom, String user, String passwd) {
-        super(nom, user, passwd);
+    public AdministradorFira(String user, String passwd) {
+        super(user, passwd);
     }
 
     public void addEmpresa(Empresa empresa){

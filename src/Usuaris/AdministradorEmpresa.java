@@ -16,8 +16,8 @@ import java.util.HashMap;
 public class AdministradorEmpresa extends Usuari implements Treballador{
     String nomEmpresa;
 
-    public AdministradorEmpresa(String nom, String user, String passwd, String nomEmpresa) {
-        super(nom, user, passwd);
+    public AdministradorEmpresa(String user, String passwd, String nomEmpresa) {
+        super(user, passwd);
         this.nomEmpresa = nomEmpresa;
     }
 

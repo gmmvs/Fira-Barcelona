@@ -20,10 +20,10 @@ import java.util.*;
  * Created by Marc on 29/04/2017.
  */
 public class Principal {
-    private static AdministradorFira Admin = new AdministradorFira("Administrador Fira","AdminFira","1234");
+    private static AdministradorFira Admin = new AdministradorFira("AdminFira","1234");
 
     public static void main(String args[]) {
-        Fira.addAdministrador(new AdministradorEmpresa("Smith","AdminEmp","1234","I-Mas"));
+        Fira.addAdministrador(new AdministradorEmpresa("AdminEmp","1234","I-Mas"));
 
         int opcio = 0;
         try {
@@ -269,7 +269,7 @@ public class Principal {
                         ArrayList<Estant> estants = new ArrayList<Estant>();
                         Empresa empresa = new Empresa(NomEmpresa, estants);
                         Admin.addEmpresa(empresa);
-                        AdministradorEmpresa AdminEmp = new AdministradorEmpresa(Nom, Usuari, Pass, NomEmpresa);
+                        AdministradorEmpresa AdminEmp = new AdministradorEmpresa(Usuari, Pass, NomEmpresa);
                         Admin.addAdministradorEmpresa(AdminEmp);
 
                         break;
@@ -437,7 +437,7 @@ public class Principal {
                         System.out.println("Pass Treballador:");
                         entrada = new Scanner(System.in);
                         String Pass = entrada.nextLine();
-                        ImplTreballador treballador = new ImplTreballador(Nom,Usuari,Pass);
+                        ImplTreballador treballador = new ImplTreballador(Usuari,Pass);
                         treballador.setRespEstant(estantSel);
                         Fira.getEmpresas().get(AdminEmp.getNomEmpresa()).getTreballadors().add(treballador);
                         System.out.println("Treballador Creat Correctament");
