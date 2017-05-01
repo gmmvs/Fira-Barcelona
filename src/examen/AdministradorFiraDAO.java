@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class EmpleatDAO {
+public class AdministradorFiraDAO {
     Connection connection = null;
     PreparedStatement ptmt = null;
     ResultSet resultSet = null;
 
-    public EmpleatDAO() {
+    public AdministradorFiraDAO() {
 
     }
 
@@ -21,14 +21,13 @@ public class EmpleatDAO {
         return conn;
     }
 
-    public void crearEmpleat(EmpleatBean empleatBean) {
+    public void addAdministradorFira(AdministradorFiraBean administradorFiraBean) {
         try {
-            String queryString = "INSERT INTO empleat(Codi, Nom, dataContracte) VALUES(?,?,?)";
+            String queryString = "INSERT INTO AdministradorFira( nomUsuari, password) VALUES(?,?)";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
-            ptmt.setInt(1, empleatBean.getCodi());
-            ptmt.setString(2, empleatBean.getNom());
-            ptmt.setDate(3, (java.sql.Date) empleatBean.getDataContracte());
+            ptmt.setString(1, administradorFiraBean.getnomUsuari());
+            ptmt.setString(2, administradorFiraBean.getPassword());
             ptmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,14 +47,14 @@ public class EmpleatDAO {
 
     }
 
-    public void actualitzarEmpleat(EmpleatBean empleatBean) {
+    public void updateAdiministradorFira(AdministradorFiraBean administradorFiraBean) {
 
         try {
-            String queryString = "UPDATE empleat SET Nom=? WHERE Codi=?";
+            String queryString = "UPDATE AdministradorFira SET nomUsuari=? WHERE Codi=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
-            ptmt.setString(1, empleatBean.getNom());
-            ptmt.setInt(2, empleatBean.getCodi());
+            ptmt.setString(2, administradorFiraBean.getnomUsuari());
+            ptmt.setInt(1, administradorFiraBean.getCodi());
             ptmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +76,7 @@ public class EmpleatDAO {
     public void esborrar(int codi) {
 
         try {
-            String queryString = "DELETE FROM empleat WHERE Codi=?";
+            String queryString = "DELETE FROM AdministradorFira WHERE Codi=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, codi);
@@ -100,15 +99,15 @@ public class EmpleatDAO {
 
     }
 
-    public void llistarEmpleats() {
+    public void llistarAdministradorFira() {
         try {
-            String queryString = "SELECT * FROM empleat";
+            String queryString = "SELECT * FROM AdministradorFira";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             resultSet = ptmt.executeQuery();
             while (resultSet.next()) {
                 System.out.println("Codi  " + resultSet.getInt("Codi")
-                        + ", Nom " + resultSet.getString("Nom"));
+                        + ", nomUsuari " + resultSet.getString("nomUsuari"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -129,23 +128,5 @@ public class EmpleatDAO {
         }
     }
 
-    public int getTotalEmpleats() {
-        int numeroEmpleats = 0;
-        try {
-            String queryString = "SELECT DISTINCT COUNT(*) FROM empleat";
-            connection = getConnection();
-            ptmt = connection.prepareStatement(queryString);
-            resultSet = ptmt.executeQuery();
-
-            numeroEmpleats = resultSet.getInt("Codi");
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(numeroEmpleats);
-        return numeroEmpleats;
-    }
 }
 

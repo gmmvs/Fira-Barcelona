@@ -3,18 +3,18 @@ package examen;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EmpleatBean implements Serializable {
+public class AdministradorFiraBean implements Serializable {
     int codi;
-    String nom;
-    Date dataContracte;
+    String nomUsuari;
+    String password;
 
-    public EmpleatBean() {
+    public AdministradorFiraBean() {
     }
 
-    public EmpleatBean(int codi, String nom, Date dataContracte) {
+    public AdministradorFiraBean(int codi, String user, String password) {
         this.codi = codi;
-        this.nom = nom;
-        this.dataContracte = dataContracte;
+        this.nomUsuari = user;
+        this.password = password;
     }
 
     public int getCodi() {
@@ -25,19 +25,19 @@ public class EmpleatBean implements Serializable {
         this.codi = codi;
     }
 
-    public String getNom() {
-        return nom;
+    public String getnomUsuari() {
+        return nomUsuari;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setnomUsuari(String nomUsuari) {
+        this.nomUsuari = nomUsuari;
     }
 
-    public Date getDataContracte() {
-        return dataContracte;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDataContracte(Date dataContracte) {
-        this.dataContracte = dataContracte;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

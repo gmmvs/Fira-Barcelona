@@ -10,12 +10,12 @@ Rq06 – Registre empresa
 Rq07 – modificació d'empresa
 Rq08 – eliminació d'empresa (nomes admin)
 Rq09 – Cerca d'empreses
-Rq10- Llistat empresa
+Rq10 - Llistat empresa
 Rq11 – Alta d'elements per identificador
 Rq12 – Modificació d'elements per identificador
 Rq13 – Llistat d'elements per identificador
 Rq14 – Llistat de l''historial d'exposicions en rangs de dades 
-Rq15– Cerca de l'historial d'exposicions en rangs de dades 
+Rq15 – Cerca de l'historial d'exposicions en rangs de dades 
 Rq16 – L'aplicació divideix la superfície en plantes i números d'estants de forma automàtica.
 Rq17 – L'aplicació indica número d'estants que hi ha disponibles
 Rq18 – L'aplicació indica número d'estants que hi ha ocupats
@@ -29,9 +29,9 @@ Rq25 – L'aplicació permet definir quins recintes s'utilitzaran
 Rq26 – L'aplicació permet diferenciar entre usuaris i admins
 Rq27 – L'aplicació farà un càlcul dels diners que costarà llogar un espai per l'estant
 Rq28 – Preu entrada
-Rq 29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
-Rq 30 – 
-
+Rq29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
+Rq30 – 
+marc gay
 
 
 classe fira, persona, estant, recinte, empresa, 
