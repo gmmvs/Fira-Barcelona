@@ -18,28 +18,29 @@ USE `FiraBarcelona`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `AdministradorFira`
+-- Table structure for table `Estants`
 --
 
-DROP TABLE IF EXISTS `AdministradorFira`;
+DROP TABLE IF EXISTS `Estants`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `AdministradorFira` (
-  `codi` int(11) NOT NULL AUTO_INCREMENT,
-  `nomUsuari` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`codi`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+CREATE TABLE `Estants` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `idProducte` int(11) DEFAULT NULL,
+  `Nom` varchar(45) DEFAULT NULL,
+  `NomEmpresa` varchar(45) DEFAULT NULL,
+  `Ingressos` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `AdministradorFira`
+-- Dumping data for table `Estants`
 --
 
-LOCK TABLES `AdministradorFira` WRITE;
-/*!40000 ALTER TABLE `AdministradorFira` DISABLE KEYS */;
-INSERT INTO `AdministradorFira` VALUES (1,'Guillem','hola'),(2,'Guillem','hola'),(3,'Guillem','hola'),(4,'Guillem','hola');
-/*!40000 ALTER TABLE `AdministradorFira` ENABLE KEYS */;
+LOCK TABLES `Estants` WRITE;
+/*!40000 ALTER TABLE `Estants` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Estants` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
