@@ -27,7 +27,8 @@ DROP TABLE IF EXISTS `Producte`;
 CREATE TABLE `Producte` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(45) DEFAULT NULL,
-  `Preu` varchar(45) DEFAULT NULL,
+  `Preu` int(11) DEFAULT NULL,
+  `IdEstant` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-02  1:39:34
+-- Dump completed on 2017-05-02  2:23:38

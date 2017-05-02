@@ -28,7 +28,7 @@ CREATE TABLE `Treballador` (
   `Id` int(11) NOT NULL,
   `Usuari` varchar(45) DEFAULT NULL,
   `Passwd` varchar(45) DEFAULT NULL,
-  `IdEstant` int(11) DEFAULT NULL,
+  `IdEmpresa` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-02  1:39:34
+-- Dump completed on 2017-05-02  2:23:38
