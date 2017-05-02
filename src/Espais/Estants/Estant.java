@@ -10,8 +10,8 @@ public class Estant {
     private int id;
     private String Nom;
     private String Empresa;
-    private HashMap<String,Producte> Productes;
-    private int Ingressos;
+    private HashMap<String,Producte> Productes = new HashMap<String,Producte>();
+    private double Ingressos = 0.00;
 
     public Estant() {
     }
@@ -20,7 +20,7 @@ public class Estant {
         this.id = id;
     }
 
-    public Estant(int id, String nom, String empresa, HashMap<String, Espais.Estants.Producte> producte, int ingressos) {
+    public Estant(int id, String nom, String empresa, HashMap<String, Espais.Estants.Producte> producte, double ingressos) {
         this.id = id;
         Nom = nom;
         Empresa = empresa;
@@ -60,19 +60,19 @@ public class Estant {
         Productes = producte;
     }
 
-    public int getIngressos() {
+    public double getIngressos() {
         return Ingressos;
     }
 
-    public void setIngressos(int ingressos) {
+    public void setIngressos(double ingressos) {
         Ingressos = ingressos;
     }
 
-    public void addProducte(String Name, String id, double Price){
-        Productes.put(id,new Producte(id,Name,Price));
+    public void addProducte(Producte producte){
+        Productes.put(producte.getNom(),producte);
     }
 
-    public void delProducte(String id){
-        Productes.remove(id);
+    public void delProducte(String name){
+        Productes.remove(name);
     }
 }

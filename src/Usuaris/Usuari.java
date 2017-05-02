@@ -6,25 +6,24 @@ package Usuaris;
 
 public abstract class Usuari {
 
-    private String Nom;
+    private int id;
     private String User;
     private String Passwd;
 
     public Usuari() {
     }
 
-    public Usuari(String nom, String user, String passwd) {
-        Nom = nom;
+    public Usuari(String user, String passwd) {
         User = user;
         Passwd = passwd;
     }
 
-    public String getNom() {
-        return Nom;
+    public int getId() {
+        return id;
     }
 
-    public void setNom(String nom) {
-        Nom = nom;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUser() {

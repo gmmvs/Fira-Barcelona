@@ -7,27 +7,37 @@ import java.util.ArrayList;
  */
 public class Edifici {
 
-    private String id;
+    private int id;
+    private String Nom;
     private ArrayList<Planta> Plantes;
 
     public Edifici() {
     }
 
-    public Edifici(String id) {
-        this.id = id;
+    public Edifici(String nom) {
+        this.Nom = nom;
     }
 
-    public Edifici(String id, ArrayList<Planta> plantes) {
-        this.id = id;
+    public Edifici(String Nom, ArrayList<Planta> plantes) {
+        this.Nom = Nom;
         Plantes = plantes;
     }
 
-    public String getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNom() {
+        return Nom;
+    }
+
+    public void setNom(String nom) {
+        Nom = nom;
     }
 
     public ArrayList<Planta> getPlantes() {
@@ -38,9 +48,7 @@ public class Edifici {
         Plantes = plantes;
     }
 
-    public void addPlanta(){
-        Planta P1 = new Planta(1);
-        P1.createEstant(1,1);
-        Plantes.add(P1);
+    public void addPlanta(Planta planta){
+        Plantes.add(planta);
     }
 }

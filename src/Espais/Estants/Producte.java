@@ -5,24 +5,23 @@ package Espais.Estants;
  */
 public class Producte {
 
-    private String id;
+    private int id;
     private String Nom;
     private Double Preu;
 
     public Producte() {
     }
 
-    public Producte(String id, String nom, Double preu) {
-        this.id = id;
+    public Producte(String nom, Double preu) {
         Nom = nom;
         this.Preu=preu;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
