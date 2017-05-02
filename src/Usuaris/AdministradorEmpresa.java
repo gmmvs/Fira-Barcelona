@@ -1,5 +1,6 @@
 package Usuaris;
 
+import DAO.EstantDAO;
 import Empresa.Empresa;
 import Espais.Estants.Estant;
 import Espais.Estants.Producte;
@@ -63,7 +64,8 @@ public class AdministradorEmpresa extends Usuari implements Treballador{
     public void selEstant(String nomEstant, Estant estant){
         estant.setEmpresa(nomEmpresa);
         estant.setNom(nomEstant);
-        Fira.getEmpresas().get(nomEmpresa).getEstants().add(estant);
+        EstantDAO estantAdmin = new EstantDAO();
+        estantAdmin.updateEstantEmpresa(estant,this.getId());
     }
 
     @Override

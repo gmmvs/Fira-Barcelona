@@ -1,15 +1,14 @@
 package sample;
 
-import DAO.AdministradorEmpresaDAO;
-import DAO.AdministradorFiraDAO;
-import DAO.ImplTreballadorDAO;
-import DAO.RecinteDAO;
+import DAO.*;
 import Empresa.Empresa;
 import Espais.Edifici;
 import Espais.Estants.Estant;
 import Espais.Estants.Producte;
 import Espais.Planta;
 import Espais.Recinte;
+import Exceptions.ExceptionNotAnOption;
+import Exceptions.ExceptionNotAnUser;
 import Exceptions.WrongCredentials;
 import Fira.Fira;
 import Usuaris.AdministradorEmpresa;
@@ -26,6 +25,7 @@ import java.util.*;
  */
 public class Principal {
     private static AdministradorFira Admin = new AdministradorFira("AdminFira","1234");
+
 
     public static void main(String args[]) {
         Fira.addAdministrador(new AdministradorEmpresa("AdminEmp","1234","I-Mas"));
@@ -83,6 +83,9 @@ public class Principal {
 
     public static void validarAdminFira(){
         try {
+            AdministradorFiraDAO adminFDAO = new AdministradorFiraDAO();
+            adminFDAO.insertAdministradorFira(Admin);
+
             String Usuari;
             String Contrasenya;
             int match = 0;
@@ -178,6 +181,10 @@ public class Principal {
         String Nom;
         int opcio = 0;
         RecinteDAO recinte = new RecinteDAO();
+        PlantaDAO plantas = new PlantaDAO();
+        EdificiDAO edifici = new EdificiDAO();
+        EmpresaDAO empresa = new EmpresaDAO();
+        AdministradorEmpresaDAO adminEmp = new AdministradorEmpresaDAO();
 
         do {
             try {
@@ -193,88 +200,97 @@ public class Principal {
 
                 Scanner entrada = new Scanner(System.in);
                 opcio = entrada.nextInt();
+                int match = 0;
 
                 switch (opcio) {
                     case 1:
                         System.out.println("Nom Recinte a crear:");
                         entrada = new Scanner(System.in);
                         Nom = entrada.nextLine();
-                        //recinte.insertRecinte(new Recinte(Nom));
-                        Admin.addRecinte(Nom);
+                        recinte.insertRecinte(new Recinte(Nom));
                         break;
                     case 2:
-                        System.out.println("Nom Recinte a borrar:");
+                        System.out.println("Id Recinte a borrar:");
+                        for (Recinte r :recinte.llistarRecintes()) {
+                            System.out.println(r.getId()+".-"+r.getNom());
+                        }
                         entrada = new Scanner(System.in);
-                        Nom = entrada.nextLine();
-                        Admin.delRecinte(Nom);
+                        int oborrar = entrada.nextInt();
+                        recinte.deleteRecinte(oborrar);
                         break;
                     case 3:
-                        System.out.println("Recintes existent:");
-                        HashMap<String, Recinte> recintes = Fira.getRecintes();
-                        ArrayList<String> NRecintes = new ArrayList<>();
-                        if (recintes.keySet().size()<1)
-                            throw new NullPointerException();
-                        for (String a : recintes.keySet()){
-                            System.out.println(a);
-                            NRecintes.add(a);
+                        System.out.println("Recintes existents:");
+
+                        if (recinte.llistarRecintes().size()<1)
+                            throw new ExceptionNotAnOption("No es troba cap recinte.");
+                        for (Recinte a : recinte.llistarRecintes()){
+                            System.out.println(a.getId()+".-"+a.getNom());
                         }
 
-                        System.out.println("Nom Recinte existent:");
+                        System.out.println("Id/Número Recinte existent:");
                         entrada = new Scanner(System.in);
-                        String nomRecinte = entrada.nextLine();
-                        if (!NRecintes.contains(nomRecinte)){
-                            throw new NullPointerException();
+                        int iRecinte = entrada.nextInt();
+                        for (Recinte r :recinte.llistarRecintes()) {
+                            if (r.getId()==iRecinte){
+                                System.out.println("Nom Edifici a crear:");
+                                entrada = new Scanner(System.in);
+                                String nomEdifici = entrada.nextLine();
+
+
+                                System.out.println("Numero de Plantes:");
+                                entrada = new Scanner(System.in);
+                                int nPlantes = entrada.nextInt();
+                                ArrayList<Planta> Plantes = new ArrayList<Planta>();
+                                for (int n = 0;n<nPlantes;n++){
+                                    System.out.println("Nº per a la Planta:");
+                                    entrada = new Scanner(System.in);
+                                    int nPlanta = entrada.nextInt();
+
+                                    System.out.println("Estants per a la Planta:");
+                                    entrada = new Scanner(System.in);
+                                    int nPlantaEstants = entrada.nextInt();
+                                    HashMap<Integer,Estant> Estants = new HashMap<Integer,Estant>();
+                                    for (int j = 0; j<nPlantaEstants; j++)
+                                        Estants.put(j,new Estant(j));
+
+                                    Plantes.add(new Planta(nPlanta,Estants));
+                                }
+                                edifici.insertEdifici(new Edifici(nomEdifici,Plantes),r.getId());
+                                System.out.println("Edifici Creat");
+                                match = 1;
+                            }
                         }
+                        if (match==0)
+                            throw new ExceptionNotAnOption("No es troba el recinte.");
 
-                        System.out.println("Nom Edifici a crear:");
-                        entrada = new Scanner(System.in);
-                        String nomEdifici = entrada.nextLine();
-
-                        System.out.println("Numero de Plantes:");
-                        entrada = new Scanner(System.in);
-                        int nPlantes = entrada.nextInt();
-                        ArrayList<Planta> Plantes = new ArrayList<Planta>();
-                        for (int n = 0;n<nPlantes;n++){
-                            System.out.println("Nº per la Planta:");
-                            entrada = new Scanner(System.in);
-                            int nPlanta = entrada.nextInt();
-
-                            System.out.println("Estants per a la Planta:");
-                            entrada = new Scanner(System.in);
-                            int nPlantaEstants = entrada.nextInt();
-                            HashMap<Integer,Estant> Estants = new HashMap<Integer,Estant>();
-                            for (int j = 0; j<nPlantaEstants; j++)
-                                Estants.put(j,new Estant(j));
-
-                            Plantes.add(new Planta(nPlanta,Estants));
-                        }
-                        Recinte recinteSeleccionat = recintes.get(nomRecinte);
-                        System.out.println("Recinte Creat");
-                        recinteSeleccionat.addEdifici(new Edifici(nomEdifici,Plantes));
 
                         break;
                     case 4:
                         System.out.println("Recintes:");
-                        HashMap<String, Recinte> Recintes = Fira.getRecintes();
-                        for (String a : Recintes.keySet())
-                            System.out.println(a);
+                        for (Recinte a : recinte.llistarRecintes())
+                            System.out.println(a.getNom());
 
                         System.out.println("Nom Recinte:");
                         entrada = new Scanner(System.in);
                         String NRecinte = entrada.nextLine();
-                        Recinte recinteSel = Recintes.get(NRecinte);
+                        int idRecinte = -1;
 
-                        System.out.println("Edificis:");
-                        ArrayList<Edifici> Edificis = recinteSel.getEdificis();
-                        for (Edifici a :
-                                Edificis) {
-                            System.out.println(a.getId());
+                        for (Recinte r:recinte.llistarRecintes()) {
+                            if (r.getNom().equals(NRecinte)){
+                                idRecinte = r.getId();
+                            }
                         }
 
-                        System.out.println("Nom Edifici a eliminar:");
+                        System.out.println("Edificis:");
+                        ArrayList<Edifici> Edificis = edifici.llistarEdificiRecinte(idRecinte);
+                        for (Edifici a : Edificis) {
+                            System.out.println("Id: "+a.getId()+" Nom: "+a.getNom());
+                        }
+
+                        System.out.println("Id del Edifici a eliminar:");
                         entrada = new Scanner(System.in);
-                        String NEdifici = entrada.nextLine();
-                        recinteSel.delEdifici(recinteSel.getEdifici(NEdifici));
+                        int iEdifici = entrada.nextInt();
+                        edifici.deleteEdifici(iEdifici);
 
                         break;
                     case 5:
@@ -291,30 +307,35 @@ public class Principal {
                         entrada = new Scanner(System.in);
                         String Pass = entrada.nextLine();
                         ArrayList<Estant> estants = new ArrayList<Estant>();
-                        Empresa empresa = new Empresa(NomEmpresa, estants);
-                        Admin.addEmpresa(empresa);
-                        AdministradorEmpresa AdminEmp = new AdministradorEmpresa(Usuari, Pass, NomEmpresa);
-                        Admin.addAdministradorEmpresa(AdminEmp);
+                        empresa.insertEmpresa(new Empresa(NomEmpresa, estants));
+                        adminEmp.insertAdministradorEmpresa(new AdministradorEmpresa(Usuari, Pass, NomEmpresa));
 
                         break;
                     case 6:
+                        match = 0;
                         System.out.println("Nom Empresa:");
                         entrada = new Scanner(System.in);
                         Nom = entrada.nextLine();
-                        if (Admin.delEmpresa(Nom) != null) {
-                            System.out.print("S'ha borrat Correctament");
+                        for (Empresa e :empresa.llistarEmpresa()) {
+                            if (e.getNom().equals(Nom)){
+                                empresa.deleteEmpresa(e.getId());
+                                match = 1;
+                            }
                         }
+                        if (match == 0) {
+                            throw new ExceptionNotAnOption("Aquesta empresa no existeix.");
+                        }
+
                         break;
                     case 7:
-                        Set<String> Keys = Fira.getAdministradors().keySet();
                         System.out.println("Usuaris: ");
-                        for (String a:Keys) {
-                            System.out.println(a);
+                        for (AdministradorEmpresa a:adminEmp.llistarAdministradorEmpresa()) {
+                            System.out.println("id: "+a.getId()+" User: "+a.getUser()+" Empresa: "+a.getNomEmpresa());
                         }
-                        System.out.println("Nom Usuari:");
+                        System.out.println("Id Usuari:");
                         entrada = new Scanner(System.in);
-                        Nom = entrada.nextLine();
-                        Admin.delAdministradorEmpresa(Nom);
+                        int id = entrada.nextInt();
+                        adminEmp.deleteAdiministradorEmpresa(id);
                         break;
                     case 8:
                         break;
@@ -330,6 +351,10 @@ public class Principal {
                 System.out.println("Error al ecanejar.");
             }catch (IllegalStateException ex){
                 System.out.println("No es permet escanejar.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }catch (ExceptionNotAnOption e) {
+                System.out.println(e);
             }
         } while (opcio != 8);
 
@@ -337,6 +362,13 @@ public class Principal {
 
     public static void menuAdminEmp(AdministradorEmpresa AdminEmp){
         int opcio=0;
+
+        RecinteDAO recinte = new RecinteDAO();
+        EmpresaDAO empresaDAO = new EmpresaDAO();
+        EstantDAO estantsdao = new EstantDAO();
+        ProducteDAO productDAO = new ProducteDAO();
+        ImplTreballadorDAO treballadorDAO = new ImplTreballadorDAO();
+
         do {
             try {
 
@@ -351,18 +383,23 @@ public class Principal {
 
                 switch (opcio) {
                     case 1:
-                        Set<String> Recintes = Fira.getRecintes().keySet();
-                        System.out.println("Escull un Recinte:");
-                        for (String a : Recintes) {
-                            System.out.println(a);
+
+                        System.out.println("Escull un Recinte per Id:");
+                        for (Recinte a : recinte.llistarRecintes()) {
+                            System.out.println("id: "+a.getId()+" Nom: "+a.getNom());
                         }
                         entrada = new Scanner(System.in);
-                        String Recinte = entrada.nextLine();
-                        if (!Recintes.contains(Recinte))
+                        int idRecinte = entrada.nextInt();
+                        Recinte recinte1 = null;
+                        for (Recinte a : recinte.llistarRecintes()) {
+                            if (a.getId()==idRecinte)
+                                recinte1=a;
+                        }
+                        if (recinte1==null)
                             throw new NullPointerException();
+
                         System.out.println("Escull un Nº d'Edifici:");
-                        Recinte recinte = Fira.getRecintes().get(Recinte);
-                        ArrayList<Edifici> Edificis = recinte.getEdificis();
+                        ArrayList<Edifici> Edificis = recinte1.getEdificis();
                         int sEdifici = 0;
                         for (Edifici a : Edificis) {
                             System.out.println(sEdifici+". "+a.getId());
@@ -395,39 +432,55 @@ public class Principal {
                         String nomEstant = entrada.nextLine();
 
                         Estant estant = pPlanta.getEstants().get(Estant);
+
                         AdminEmp.selEstant(nomEstant,estant);
                         System.out.println("Estant Creat");
                         break;
                     case 2:
-                        Empresa empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
                         System.out.println("Escull Nº d'estant:");
                         int nEstant = 0;
-                        for (Estant a : empresa.getEstants()) {
+                        int idEmpresa=-1;
+                        for (Empresa a:empresaDAO.llistarEmpresa()) {
+                            if (a.getNom().equals(AdminEmp.getNomEmpresa())){
+                                idEmpresa = a.getId();
+                            }
+                        }
+                        for (Estant a : empresaDAO.selectEmpresa(idEmpresa).getEstants()) {
                             System.out.println(nEstant+". "+a.getNom());
                             nEstant++;
                         }
                         entrada = new Scanner(System.in);
                         int sEstant = entrada.nextInt();
-                        Estant estantSel = empresa.getEstants().get(sEstant);
+                        Estant estantSel = empresaDAO.selectEmpresa(idEmpresa).getEstants().get(sEstant);
                         System.out.println("Nom Producte:");
                         entrada = new Scanner(System.in);
                         String Nom = entrada.nextLine();
                         System.out.println("Preu Producte (ex:X.XX):");
                         entrada = new Scanner(System.in);
                         double preu = entrada.nextDouble();
-                        estantSel.addProducte(new Producte(Nom,Nom,preu));
+                        Producte prod = new Producte(Nom,preu);
+                        productDAO.insertProducte(prod,estantSel.getId());
+                        estantSel.addProducte(prod);
+                        estantsdao.updateEstant(estantSel);
                         System.out.println("Producte Inserit");
                         break;
                     case 3:
-                        empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
                         System.out.println("Escull Nº d'estant:");
+                        Empresa emp = null;
+                        for (Empresa e:empresaDAO.llistarEmpresa()) {
+                            if (e.getNom().equals(AdminEmp.getNomEmpresa())){
+                                emp = e;
+                            }
+                        }
+
+
                         nEstant = 0;
-                        for (Estant a : empresa.getEstants()) {
+                        for (Estant a : estantsdao.llistarEstantsEmpresa(emp.getId())) {
                             System.out.println(" |-"+nEstant+". "+a.getNom());
                         }
                         entrada = new Scanner(System.in);
                         sEstant = entrada.nextInt();
-                        estantSel = empresa.getEstants().get(sEstant);
+                        estantSel = estantsdao.llistarEstantsEmpresa(emp.getId()).get(nEstant);
                         System.out.println("Nom Producte:");
                         for (String a : estantSel.getProducte().keySet()) {
                             System.out.println(" |-"+a);
@@ -442,16 +495,25 @@ public class Principal {
 
                         break;
                     case 4:
-                        empresa = Fira.getEmpresas().get(AdminEmp.getNomEmpresa());
+
                         System.out.println("Escull Nº d'estant:");
+
+                        emp = null;
+                        for (Empresa e:empresaDAO.llistarEmpresa()) {
+                            if (e.getNom().equals(AdminEmp.getNomEmpresa())){
+                                emp = e;
+                            }
+                        }
+
                         nEstant = 0;
-                        for (Estant a : empresa.getEstants()) {
+                        for (Estant a : estantsdao.llistarEstantsEmpresa(emp.getId())) {
                             System.out.println(" |- "+nEstant+". "+a.getNom());
                             nEstant++;
                         }
+
                         entrada = new Scanner(System.in);
                         sEstant = entrada.nextInt();
-                        estantSel = empresa.getEstants().get(sEstant);
+                        estantSel = estantsdao.llistarEstantsEmpresa(emp.getId()).get(sEstant);
                         System.out.println("Nom Treballador:");
                         entrada = new Scanner(System.in);
                         Nom = entrada.nextLine();
@@ -462,15 +524,25 @@ public class Principal {
                         entrada = new Scanner(System.in);
                         String Pass = entrada.nextLine();
                         ImplTreballador treballador = new ImplTreballador(Usuari,Pass);
+                        treballadorDAO.insertImplTreballador(treballador,emp.getId());
                         treballador.setRespEstant(estantSel);
-                        Fira.getEmpresas().get(AdminEmp.getNomEmpresa()).getTreballadors().add(treballador);
+                        treballadorDAO.updateImplTreballador(treballador);
                         System.out.println("Treballador Creat Correctament");
                         break;
                     case 5:
+                        emp = null;
+                        for (Empresa e:empresaDAO.llistarEmpresa()) {
+                            if (e.getNom().equals(AdminEmp.getNomEmpresa())){
+                                emp = e;
+                            }
+                        }
+
                         System.out.println("Usuari Treballador:");
                         entrada = new Scanner(System.in);
                         Usuari = entrada.nextLine();
-                        ArrayList<ImplTreballador> treballadors = Fira.getEmpresas().get(AdminEmp.getNomEmpresa()).getTreballadors();
+
+                        ArrayList<ImplTreballador> treballadors = treballadorDAO.llistarImplTreballadorEmpresa(emp.getId());
+
                         int n1 = 0;
                         int match = 0;
                         for (ImplTreballador treballador1: treballadors) {
@@ -478,12 +550,13 @@ public class Principal {
                             if (treballador1.getUser().equals(Usuari)){
                                 match = n1;
                             }
+                            n1++;
                         }
                         if (match != 0){
-                            treballadors.remove(treballadors.get(n1));
+                            treballadorDAO.llistarImplTreballadorEmpresa(emp.getId()).remove(n1);
                             System.out.println("Treballador Esborrat Correctament");
                         }else{
-                            System.out.println("Treballador No Existeix");
+                            throw new ExceptionNotAnOption("Treballador No Existeix");
                         }
 
                         break;
@@ -495,14 +568,14 @@ public class Principal {
                 }
             } catch (InputMismatchException ex){
                 System.out.println("Entrada incorrecta.");
-            }catch (NullPointerException ex){
+            }catch (NullPointerException | IndexOutOfBoundsException ex){
                 System.out.println("No n'hi ha constancia.");
             }catch (NoSuchElementException ex){
                 System.out.println("Error al ecanejar.");
             }catch (IllegalStateException ex){
                 System.out.println("No es permet escanejar.");
-            }catch (IndexOutOfBoundsException ex){
-                System.out.println("No n'hi ha constancia.");
+            } catch (SQLException | ExceptionNotAnOption e) {
+                e.printStackTrace();
             }
         } while (opcio != 6) ;
     }
@@ -510,6 +583,8 @@ public class Principal {
     public static void menuTreballadors(ImplTreballador Treballador){
         int opcio = 0;
         int nEstant;
+
+        EstantDAO estantDAo = new EstantDAO();
 
         do {
             try {
@@ -522,7 +597,7 @@ public class Principal {
 
                 switch (opcio) {
                     case 1:
-                        System.out.println("Selecciona Estant: ");
+                        System.out.println("Selecciona Numero Estant: ");
 
                         for (int n = 0; n < estants.size(); n++) {
                             System.out.println("|-" + n + " " + estants.get(n).getNom());
@@ -531,6 +606,7 @@ public class Principal {
                         nEstant = entrada.nextInt();
                         Estant estant = estants.get(nEstant);
                         estant.setIngressos(estant.getIngressos() + EfectuarCompra(estant));
+                        estantDAo.updateEstant(estant);
                         break;
                     case 2:
                         System.out.println("Selecciona Estant: ");
@@ -542,6 +618,7 @@ public class Principal {
                         nEstant = entrada.nextInt();
                         estant = estants.get(nEstant);
                         estant.setIngressos(estant.getIngressos() - EfectuarCompra(estant));
+                        estantDAo.updateEstant(estant);
                         break;
                     case 3:
                         break;
@@ -571,7 +648,7 @@ public class Principal {
 
         do {
             int n = 0;
-            System.out.println("Selecciona Productes:");
+            System.out.println("Selecciona NUmero Productes:");
             productes = new ArrayList<String>();
             for (String prod: estant.getProducte().keySet()) {
                 System.out.println("|- "+n+". "+prod);

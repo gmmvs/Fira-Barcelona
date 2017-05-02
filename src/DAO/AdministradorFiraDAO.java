@@ -7,10 +7,7 @@ import DAO.DAOFactory;
 import Exceptions.ExceptionNotAnUser;
 import Usuaris.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -33,7 +30,7 @@ public class AdministradorFiraDAO {
         try {
             String queryString = "INSERT INTO AdministradorFira( User, Passwd) VALUES(?,?)";
             connection = getConnection();
-            ptmt = connection.prepareStatement(queryString);
+            ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
             ptmt.setString(1, administradorFira.getUser());
             ptmt.setString(2, administradorFira.getPasswd());
             ptmt.executeUpdate();

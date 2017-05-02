@@ -109,6 +109,10 @@ public class EstantDAO {
         try {
             String queryString = "UPDATE Estant SET Nom=?, NomEmpresa=?, Ingressos=? WHERE id=?";
             connection = getConnection();
+            ProducteDAO prods = new ProducteDAO();
+            for (String e:estant.getProducte().keySet()) {
+                prods.updateProducte(estant.getProducte().get(e),estant.getId());
+            }
             ptmt = connection.prepareStatement(queryString);
             ptmt.setString(1, estant.getNom());
             ptmt.setString(2, estant.getEmpresa());
