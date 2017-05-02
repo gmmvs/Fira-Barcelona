@@ -1,11 +1,16 @@
 package sample;
 
+import DAO.AdministradorEmpresaDAO;
+import DAO.AdministradorFiraDAO;
+import DAO.ImplTreballadorDAO;
+import DAO.RecinteDAO;
 import Empresa.Empresa;
 import Espais.Edifici;
 import Espais.Estants.Estant;
 import Espais.Estants.Producte;
 import Espais.Planta;
 import Espais.Recinte;
+import Exceptions.WrongCredentials;
 import Fira.Fira;
 import Usuaris.AdministradorEmpresa;
 import Usuaris.AdministradorFira;
@@ -68,7 +73,7 @@ public class Principal {
         } catch (InputMismatchException ex) {
             System.out.println("Opció Erronea");
         }catch (NullPointerException ex){
-            System.out.println("No n'hi ha cap constancia.");
+            System.out.println("No n'hi ha constancia.");
         }catch (NoSuchElementException ex){
             System.out.println("Error al ecanejar.");
         }catch (IllegalStateException ex){
@@ -77,8 +82,10 @@ public class Principal {
     }
 
     public static void validarAdminFira(){
-        String Usuari;
-        String Contrasenya;
+        try {
+            String Usuari;
+            String Contrasenya;
+            int match = 0;
 
             System.out.println("Usuari:");
             Scanner entrada = new Scanner(System.in);
@@ -88,73 +95,89 @@ public class Principal {
             entrada = new Scanner(System.in);
             Contrasenya = entrada.nextLine();
 
-            if (Admin.getUser().equals(Usuari) && Admin.getPasswd().equals(Contrasenya)){
-                menuAdminFira();
-            }else {
-                System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
+            AdministradorFiraDAO admin = new AdministradorFiraDAO();
+
+            for (AdministradorFira a : admin.llistarAdministradorFira()) {
+                if (a.getUser().equals(Usuari) && a.getPasswd().equals(Contrasenya)) {
+                    match = 1;
+                    menuAdminFira();
+                }
             }
+            if (match == 0) {
+                throw new WrongCredentials("Usuari/Contrasenya Incorrectes");
+            }
+        }catch (WrongCredentials ex){
+            System.out.println(ex);
+        }
     }
 
     public static void validarAdminEmp(){
-        String Usuari;
-        String Contrasenya;
-        int match=0;
 
-        System.out.println("Usuari:");
-        Scanner entrada = new Scanner(System.in);
-        Usuari = entrada.nextLine();
+        try {
+            String Usuari;
+            String Contrasenya;
+            int match = 0;
 
-        System.out.println("Contrasenya:");
-        entrada = new Scanner(System.in);
-        Contrasenya = entrada.nextLine();
+            System.out.println("Usuari:");
+            Scanner entrada = new Scanner(System.in);
+            Usuari = entrada.nextLine();
 
-        HashMap<String,AdministradorEmpresa> Admins = Fira.getAdministradors();
-        for (String a : Admins.keySet()) {
-            if (a.equals(Usuari)){
-                if (Admins.get(a).getPasswd().equals(Contrasenya))
-                    match = 1;
-                    menuAdminEmp(Admins.get(a));
+            System.out.println("Contrasenya:");
+            entrada = new Scanner(System.in);
+            Contrasenya = entrada.nextLine();
+            AdministradorEmpresaDAO admin = new AdministradorEmpresaDAO();
+
+            for (AdministradorEmpresa a : admin.llistarAdministradorEmpresa()) {
+                if (a.getUser().equals(Usuari)) {
+                    if (a.getPasswd().equals(Contrasenya))
+                        match = 1;
+                    menuAdminEmp(a);
+                }
             }
-        }
-        if (match == 0){
-            System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
+            if (match == 0) {
+                throw new WrongCredentials("Usuari/Contrasenya Incorrectes");
+            }
+        }catch (WrongCredentials ex){
+            System.out.println(ex);
         }
     }
 
     public static void validarTreballador(){
-        String Usuari;
-        String Contrasenya;
-        int match=0;
 
-        System.out.println("Usuari:");
-        Scanner entrada = new Scanner(System.in);
-        Usuari = entrada.nextLine();
+        try {
+            String Usuari;
+            String Contrasenya;
+            int match = 0;
 
-        System.out.println("Contrasenya:");
-        entrada = new Scanner(System.in);
-        Contrasenya = entrada.nextLine();
+            System.out.println("Usuari:");
+            Scanner entrada = new Scanner(System.in);
+            Usuari = entrada.nextLine();
 
-        ArrayList<ImplTreballador> treballadors = new ArrayList<>();
+            System.out.println("Contrasenya:");
+            entrada = new Scanner(System.in);
+            Contrasenya = entrada.nextLine();
 
-        HashMap<String,Empresa> Empresas = Fira.getEmpresas();
-        for (String a : Empresas.keySet()) {
-            for (ImplTreballador treb : Empresas.get(a).getTreballadors()) {
-                if (treb.getUser().equals(Usuari)){
+            ImplTreballadorDAO trebs = new ImplTreballadorDAO();
+            for (ImplTreballador a : trebs.llistarImplTreballador()) {
+                if (a.getUser().equals(Usuari) && a.getPasswd().equals(Contrasenya)) {
                     match = 1;
-                    menuTreballadors(treb);
+                    menuTreballadors(a);
                 }
             }
-        }
 
-        if (match == 0){
-            System.out.println("Error de credencials:" + Usuari + "," + Contrasenya);
+            if (match == 0) {
+                throw new WrongCredentials("Usuari/Contrasenya Incorrectes");
+            }
+        }catch (WrongCredentials ex){
+            System.out.println(ex);
         }
     }
 
     public static void menuAdminFira(){
+
         String Nom;
         int opcio = 0;
-
+        RecinteDAO recinte = new RecinteDAO();
 
         do {
             try {
@@ -176,6 +199,7 @@ public class Principal {
                         System.out.println("Nom Recinte a crear:");
                         entrada = new Scanner(System.in);
                         Nom = entrada.nextLine();
+                        //recinte.insertRecinte(new Recinte(Nom));
                         Admin.addRecinte(Nom);
                         break;
                     case 2:

@@ -18,6 +18,11 @@ public class ImplTreballador extends Usuari implements Treballador{
         super(user, passwd);
     }
 
+    public ImplTreballador(String user, String passwd, ArrayList<Estant> respEstant) {
+        super(user, passwd);
+        RespEstant = respEstant;
+    }
+
     public void setRespEstant(Estant estant){
         RespEstant.add(estant);
     }

@@ -4,7 +4,6 @@ import Empresa.Empresa;
 import Espais.Estants.Estant;
 import Espais.Estants.Producte;
 import Fira.Fira;
-import com.sun.istack.internal.Pool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +14,10 @@ import java.util.HashMap;
 
 public class AdministradorEmpresa extends Usuari implements Treballador{
     String nomEmpresa;
+
+    public AdministradorEmpresa() {
+
+    }
 
     public AdministradorEmpresa(String user, String passwd, String nomEmpresa) {
         super(user, passwd);

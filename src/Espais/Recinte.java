@@ -8,10 +8,19 @@ import java.util.ArrayList;
  */
 public class Recinte {
 
+    private int id;
     private String Nom;
     private ArrayList<Edifici> Edificis =new ArrayList<>();
 
     public Recinte() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Recinte(String nom) {
@@ -47,10 +56,9 @@ public class Recinte {
         Edificis.remove(edifici);
     }
 
-    public Edifici getEdifici(String id){
-        for (Edifici a :
-                Edificis) {
-            if (a.getId().equals(id)){
+    public Edifici getEdifici(int id){
+        for (Edifici a : Edificis) {
+            if (a.getId() == id){
                 return a;
             }
         }

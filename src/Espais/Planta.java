@@ -10,6 +10,7 @@ import java.util.HashMap;
  */
 public class Planta {
 
+    private int id;
     private int Num;
     private HashMap<Integer,Estant> Estants;
 
@@ -23,6 +24,14 @@ public class Planta {
     public Planta(int num, HashMap<Integer, Estant> estants) {
         Num = num;
         Estants = estants;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNum() {

@@ -1,26 +1,21 @@
 package DAO;
 
-/**
- * Created by Marc Espinosa on 01/05/2017.
- */
-import DAO.DAOFactory;
 import Exceptions.ExceptionNotAnUser;
-import Usuaris.*;
+import Usuaris.AdministradorEmpresa;
+import Usuaris.AdministradorFira;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
-
-public class AdministradorFiraDAO {
+/**
+ * Created by Marc Espinosa on 02/05/2017.
+ */
+public class AdministradorEmpresaDAO {
     Connection connection = null;
     PreparedStatement ptmt = null;
     ResultSet resultSet = null;
 
-    public AdministradorFiraDAO() {
-
+    public AdministradorEmpresaDAO() {
     }
 
     private Connection getConnection() throws SQLException {
@@ -29,17 +24,18 @@ public class AdministradorFiraDAO {
         return conn;
     }
 
-    public void insertAdministradorFira(AdministradorFira administradorFira) {
+    public void insertAdministradorEmpresa(AdministradorEmpresa administradorEmpresa) {
         try {
-            String queryString = "INSERT INTO AdministradorFira( User, Passwd) VALUES(?,?)";
+            String queryString = "INSERT INTO AdministradorEmpresa( User, Passwd, nomEmpresa) VALUES(?,?,?)";
             connection = getConnection();
-            ptmt = connection.prepareStatement(queryString);
-            ptmt.setString(1, administradorFira.getUser());
-            ptmt.setString(2, administradorFira.getPasswd());
+            ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+            ptmt.setString(1, administradorEmpresa.getUser());
+            ptmt.setString(2, administradorEmpresa.getPasswd());
+            ptmt.setString(3, administradorEmpresa.getNomEmpresa());
             ptmt.executeUpdate();
             resultSet = ptmt.getGeneratedKeys();
             if (resultSet.next()){
-                administradorFira.setId(resultSet.getInt(1));
+                administradorEmpresa.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,14 +45,16 @@ public class AdministradorFiraDAO {
 
     }
 
-    public void updateAdiministradorFira(AdministradorFira administradorFira) {
+    public void updateAdministradorEmpresa(AdministradorEmpresa administradorEmpresa) {
 
         try {
-            String queryString = "UPDATE AdministradorFira SET User=? WHERE id=?";
+            String queryString = "UPDATE AdministradorEmpresa SET User = ?, Passwd = ?, nomEmpresa = ? WHERE Id = ?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
-            ptmt.setString(1, administradorFira.getUser());
-            ptmt.setInt(2, administradorFira.getId());
+            ptmt.setString(1, administradorEmpresa.getUser());
+            ptmt.setString(2, administradorEmpresa.getPasswd());
+            ptmt.setString(3, administradorEmpresa.getNomEmpresa());
+            ptmt.setInt(4, administradorEmpresa.getId());
             ptmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,10 +63,10 @@ public class AdministradorFiraDAO {
         }
     }
 
-    public void deleteAdiministradorFira(int codi) {
+    public void deleteAdiministradorEmpresa(int codi) {
 
         try {
-            String queryString = "DELETE FROM AdministradorFira WHERE id=?";
+            String queryString = "DELETE FROM AdministradorEmpresa WHERE Id=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, codi);
@@ -81,17 +79,17 @@ public class AdministradorFiraDAO {
 
     }
 
-    public AdministradorFira selectAdministradorFira(int id) {
-        AdministradorFira admin = new AdministradorFira();
+    public AdministradorEmpresa selectAdministradorEmpresa(int id) {
+        AdministradorEmpresa admin = new AdministradorEmpresa();
         try {
-            String queryString = "SELECT * FROM AdministradorFira WHERE id=?";
+            String queryString = "SELECT * FROM AdministradorEmpresa WHERE Id=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, id);
             ptmt.executeQuery();
             resultSet = ptmt.executeQuery();
             if (resultSet.next()){
-                admin = new AdministradorFira(resultSet.getString("User"),resultSet.getString("Passwd"));
+                admin = new AdministradorEmpresa(resultSet.getString("User"),resultSet.getString("Passwd"),resultSet.getString("NomEmpresa"));
                 admin.setId(resultSet.getInt("Id"));
                 resultSet.close();
                 return admin;
@@ -108,15 +106,15 @@ public class AdministradorFiraDAO {
     }
 
 
-    public ArrayList<AdministradorFira> llistarAdministradorFira() {
+    public ArrayList<AdministradorEmpresa> llistarAdministradorEmpresa() {
         try {
-            ArrayList<AdministradorFira> Administradors = new ArrayList<>();
-            String queryString = "SELECT * FROM AdministradorFira";
+            ArrayList<AdministradorEmpresa> Administradors = new ArrayList<>();
+            String queryString = "SELECT * FROM AdministradorEmpresa";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ResultSet rs = ptmt.executeQuery();
             while (rs.next()) {
-                Administradors.add(selectAdministradorFira(rs.getInt("Id")));
+                Administradors.add(selectAdministradorEmpresa(rs.getInt("Id")));
             }
             rs.close();
             return Administradors;
@@ -143,6 +141,3 @@ public class AdministradorFiraDAO {
         }
     }
 }
-
-
-
