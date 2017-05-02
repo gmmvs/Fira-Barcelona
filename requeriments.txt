@@ -21,17 +21,10 @@ Rq17 – L'aplicació indica número d'estants que hi ha disponibles
 Rq18 – L'aplicació indica número d'estants que hi ha ocupats
 Rq19 – L'aplicació indica número d'estants que hi ha total
 Rq20 – L'aplicació permetrà registrar un estant sempre que hi hagi superficie
-Rq21 – L'aplicació permetrà com a màxim 1 estant per empresa.
 Rq22 – L'aplicació permet adherir categories al teu estant segons els productes que hi hagi
 Rq23 – L'aplicació permet definir més d'un recinte que s'utilitzarà 
 Rq24 – L'aplicació serà reescalable per qualsevol insitució.
 Rq25 – L'aplicació permet definir quins recintes s'utilitzaran
 Rq26 – L'aplicació permet diferenciar entre usuaris i admins
 Rq27 – L'aplicació farà un càlcul dels diners que costarà llogar un espai per l'estant
-Rq28 – Preu entrada
-Rq29 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)
-Rq30 – 
-marc gay
-
-
-classe fira, persona, estant, recinte, empresa, 
+Rq28 – Fitxa d'estants → productes de cada estant i preu + (nom empresa)

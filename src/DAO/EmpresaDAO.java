@@ -89,8 +89,13 @@ public class EmpresaDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            connection.rollback();
             e.printStackTrace();
+            try{
+                if(connection!=null)
+                    connection.rollback();
+            }catch(SQLException se2){
+                se2.printStackTrace();
+            }
         } finally {
             closeDbConn();
         }

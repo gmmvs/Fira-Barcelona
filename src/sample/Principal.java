@@ -185,10 +185,10 @@ public class Principal {
         EdificiDAO edifici = new EdificiDAO();
         EmpresaDAO empresa = new EmpresaDAO();
         AdministradorEmpresaDAO adminEmp = new AdministradorEmpresaDAO();
-
+        Scanner entrada;
         do {
             try {
-
+                int match = 0;
                 System.out.println("1. Crear Recinte");
                 System.out.println("2. Borrar Recinte");
                 System.out.println("3. Crear Edifici");
@@ -198,9 +198,9 @@ public class Principal {
                 System.out.println("7. Borrar Administrador Empresa");
                 System.out.println("8. Surt");
 
-                Scanner entrada = new Scanner(System.in);
+                entrada = new Scanner(System.in);
                 opcio = entrada.nextInt();
-                int match = 0;
+
 
                 switch (opcio) {
                     case 1:
@@ -356,7 +356,7 @@ public class Principal {
             }catch (ExceptionNotAnOption e) {
                 System.out.println(e);
             }
-        } while (opcio != 8);
+        } while (opcio!=8);
 
     }
 
@@ -476,7 +476,8 @@ public class Principal {
 
                         nEstant = 0;
                         for (Estant a : estantsdao.llistarEstantsEmpresa(emp.getId())) {
-                            System.out.println(" |-"+nEstant+". "+a.getNom());
+                            System.out.println(nEstant+". "+a.getNom());
+                            nEstant++;
                         }
                         entrada = new Scanner(System.in);
                         sEstant = entrada.nextInt();
@@ -536,15 +537,20 @@ public class Principal {
                                 emp = e;
                             }
                         }
+                        ArrayList<ImplTreballador> treballadors = treballadorDAO.llistarImplTreballadorEmpresa(emp.getId());
+                        System.out.println("Trabajador");
+                        for (ImplTreballador t : treballadors) {
+                            System.out.println(t.getUser());
+                        }
 
                         System.out.println("Usuari Treballador:");
                         entrada = new Scanner(System.in);
                         Usuari = entrada.nextLine();
 
-                        ArrayList<ImplTreballador> treballadors = treballadorDAO.llistarImplTreballadorEmpresa(emp.getId());
+
 
                         int n1 = 0;
-                        int match = 0;
+                        int match = -1;
                         for (ImplTreballador treballador1: treballadors) {
 
                             if (treballador1.getUser().equals(Usuari)){
@@ -552,8 +558,8 @@ public class Principal {
                             }
                             n1++;
                         }
-                        if (match != 0){
-                            treballadorDAO.llistarImplTreballadorEmpresa(emp.getId()).remove(n1);
+                        if (match != -1){
+                            treballadorDAO.deleteImplTreballador(treballadorDAO.llistarImplTreballadorEmpresa(emp.getId()).get(match).getId());
                             System.out.println("Treballador Esborrat Correctament");
                         }else{
                             throw new ExceptionNotAnOption("Treballador No Existeix");
@@ -590,10 +596,11 @@ public class Principal {
             try {
                 System.out.println("1. Efectuar Ingres");
                 System.out.println("2. Efectuar Despesa");
-                System.out.println("3. Surt");
+                System.out.println("3. Consultar Caixa");
+                System.out.println("4. Surt");
                 Scanner entrada = new Scanner(System.in);
                 opcio = entrada.nextInt();
-                ArrayList<Estant> estants = Treballador.getRespEstant();
+                ArrayList<Estant> estants = estantDAo.llistarEstantsTreballador(Treballador.getId());
 
                 switch (opcio) {
                     case 1:
@@ -606,6 +613,7 @@ public class Principal {
                         nEstant = entrada.nextInt();
                         Estant estant = estants.get(nEstant);
                         estant.setIngressos(estant.getIngressos() + EfectuarCompra(estant));
+                        System.out.println("ingresos"+ estant.getIngressos());
                         estantDAo.updateEstant(estant);
                         break;
                     case 2:
@@ -621,6 +629,16 @@ public class Principal {
                         estantDAo.updateEstant(estant);
                         break;
                     case 3:
+                        System.out.println("Selecciona Numero Estant: ");
+
+                        for (int n = 0; n < estants.size(); n++) {
+                            System.out.println("|-" + n + " " + estants.get(n).getNom());
+                        }
+                        entrada = new Scanner(System.in);
+                        nEstant = entrada.nextInt();
+                        System.out.println(estants.get(nEstant).getIngressos());
+                        break;
+                    case 4:
                         break;
                     default:
                         System.out.println("opció incorrecta");
@@ -634,33 +652,36 @@ public class Principal {
             System.out.println("Error al esanejar.");
             }catch (IllegalStateException ex){
             System.out.println("No es permet escanejar.");
+            }catch (IndexOutOfBoundsException ex){
+                System.out.println("No existeix.");
             }
-        } while (opcio != 3);
-
+        } while (opcio != 4);
     }
 
     public static double EfectuarCompra(Estant estant){
 
-    int opcio = 0;
+    String opcio;
     int q = estant.getProducte().size();
     double money = 0;
-    ArrayList<String> productes;
 
         do {
             int n = 0;
-            System.out.println("Selecciona NUmero Productes:");
-            productes = new ArrayList<String>();
+            System.out.println("Selecciona Productes:");
             for (String prod: estant.getProducte().keySet()) {
-                System.out.println("|- "+n+". "+prod);
-                productes.add(prod);
+                System.out.println(prod);
                 n++;
             }
-            System.out.println("-"+n+"Nar A Caixa.");
+            System.out.println("Exit");
             Scanner entrada = new Scanner(System.in);
-            opcio = entrada.nextInt();
-            money+=estant.getProducte().get(productes.get(n)).getPreu();
-        } while (opcio != q);
+            opcio = entrada.nextLine();
+            if (opcio.equals("Exit")) {
+                return money;
+            }else {
+                System.out.println(money+"+"+estant.getProducte().get(opcio).getPreu());
+                money += estant.getProducte().get(opcio).getPreu();
+            }
 
-        return money;
+
+        } while (true);
     }
 }

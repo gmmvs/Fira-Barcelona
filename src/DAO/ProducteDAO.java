@@ -31,7 +31,7 @@ public class ProducteDAO {
             ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
             ptmt.setString(1, product.getNom());
             ptmt.setDouble(2, product.getPreu());
-            ptmt.setInt(2, idEstant);
+            ptmt.setInt(3, idEstant);
             ptmt.executeUpdate();
             resultSet = ptmt.getGeneratedKeys();
             if (resultSet.next()){

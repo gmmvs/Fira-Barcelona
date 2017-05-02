@@ -5,6 +5,7 @@ import Exceptions.ExceptionNotAnUser;
 import Usuaris.AdministradorEmpresa;
 import Usuaris.ImplTreballador;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -27,13 +28,13 @@ public class ImplTreballadorDAO {
 
     public void insertImplTreballador(ImplTreballador treballador, int idEmpresa) throws SQLException{
         try {
-            String queryString = "INSERT INTO ImplTreballador( User, Passwd, idEmpresa) VALUES(?,?,?)";
+            String queryString = "INSERT INTO Treballador( Usuari, Passwd, idEmpresa) VALUES(?,?,?)";
             connection = getConnection();
             connection.setAutoCommit(false);
             ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
             ptmt.setString(1, treballador.getUser());
             ptmt.setString(2, treballador.getPasswd());
-            ptmt.setInt(2, idEmpresa);
+            ptmt.setInt(3, idEmpresa);
             ptmt.executeUpdate();
             resultSet = ptmt.getGeneratedKeys();
             if (resultSet.next()){
@@ -42,12 +43,16 @@ public class ImplTreballadorDAO {
                 for (Estant e:treballador.getRespEstant()){
                     estants.updateEstantTreballador(e,treballador.getId());
                 }
-                connection.commit();
             }
-
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
-            connection.rollback();
+            try{
+                if(connection!=null)
+                    connection.rollback();
+            }catch(SQLException se2){
+                se2.printStackTrace();
+            }
         } finally {
             closeDbConn();
         }
@@ -57,25 +62,28 @@ public class ImplTreballadorDAO {
     public void updateImplTreballador(ImplTreballador treballador) throws SQLException {
 
         try {
-            String queryString = "UPDATE ImplTreballador SET User=?, Passwd =? WHERE id=?";
+            String queryString = "UPDATE Treballador SET Usuari=?, Passwd =? WHERE id=?";
             connection = getConnection();
             connection.setAutoCommit(false);
-            ptmt = connection.prepareStatement(queryString);
+            ptmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
             ptmt.setString(1, treballador.getUser());
             ptmt.setString(2, treballador.getPasswd());
             ptmt.setInt(3, treballador.getId());
             ptmt.executeUpdate();
             resultSet = ptmt.getGeneratedKeys();
-            if (resultSet.next()){
-                EstantDAO estants = new EstantDAO();
-                for (Estant e:treballador.getRespEstant()){
-                    estants.updateEstantTreballador(e,treballador.getId());
-                }
-                connection.commit();
+            connection.commit();
+            EstantDAO estants = new EstantDAO();
+            for (Estant e:treballador.getRespEstant()){
+                estants.updateEstantTreballador(e,treballador.getId());
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            connection.rollback();
+            try{
+                if(connection!=null)
+                    connection.rollback();
+            }catch(SQLException se2){
+                se2.printStackTrace();
+            }
         } finally {
             closeDbConn();
         }
@@ -84,13 +92,13 @@ public class ImplTreballadorDAO {
     public void deleteImplTreballador(int codi) {
 
         try {
-            String queryString = "DELETE FROM ImplTreballador WHERE id=?";
-            connection = getConnection();
-            connection.setAutoCommit(false);
+            String queryString = "DELETE FROM Treballador WHERE id=?";
             EstantDAO estants = new EstantDAO();
             for (Estant e:selectImplTreballador(codi).getRespEstant()){
                 estants.updateEstantTreballador(e, Integer.parseInt(null));
             }
+            connection = getConnection();
+            connection.setAutoCommit(false);
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, codi);
             ptmt.executeUpdate();
@@ -105,7 +113,7 @@ public class ImplTreballadorDAO {
     public ImplTreballador selectImplTreballador(int id) {
         ImplTreballador admin = new ImplTreballador();
         try {
-            String queryString = "SELECT * FROM ImplTreballador WHERE id=?";
+            String queryString = "SELECT * FROM Treballador WHERE id=?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, id);
@@ -113,7 +121,7 @@ public class ImplTreballadorDAO {
             resultSet = ptmt.executeQuery();
             if (resultSet.next()){
                 EstantDAO estants = new EstantDAO();
-                admin = new ImplTreballador(resultSet.getString("User"),resultSet.getString("Passwd"),estants.llistarEstantsTreballador(resultSet.getInt("id")));
+                admin = new ImplTreballador(resultSet.getString("Usuari"),resultSet.getString("Passwd"),estants.llistarEstantsTreballador(resultSet.getInt("id")));
                 admin.setId(resultSet.getInt("id"));
                 resultSet.close();
                 return admin;
@@ -133,7 +141,7 @@ public class ImplTreballadorDAO {
     public ArrayList<ImplTreballador> llistarImplTreballador() {
         try {
             ArrayList<ImplTreballador> Administradors = new ArrayList<>();
-            String queryString = "SELECT * FROM ImplTreballador";
+            String queryString = "SELECT * FROM Treballador";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ResultSet rs = ptmt.executeQuery();
@@ -154,7 +162,7 @@ public class ImplTreballadorDAO {
     public ArrayList<ImplTreballador> llistarImplTreballadorEmpresa(int idEmpresa) {
         try {
             ArrayList<ImplTreballador> Administradors = new ArrayList<>();
-            String queryString = "SELECT * FROM ImplTreballador WHERE idEmpresa =?";
+            String queryString = "SELECT * FROM Treballador WHERE idEmpresa =?";
             connection = getConnection();
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1,idEmpresa);

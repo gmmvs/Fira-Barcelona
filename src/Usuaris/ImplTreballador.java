@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Marc on 30/04/2017.
  */
 public class ImplTreballador extends Usuari implements Treballador{
-    private ArrayList<Estant> RespEstant;
+    private ArrayList<Estant> RespEstant = new ArrayList<>();
 
     public ImplTreballador() {
     }

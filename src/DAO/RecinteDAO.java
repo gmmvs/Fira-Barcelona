@@ -67,20 +67,26 @@ public class RecinteDAO {
         try {
 
             String queryString = "DELETE FROM Recinte WHERE Id=?";
-            connection = getConnection();
-            connection.setAutoCommit(false);
             EdificiDAO edifDAO = new EdificiDAO();
             for (Edifici e: selectRecinte(codi).getEdificis()){
                 edifDAO.updateEdifici(e,codi);
             }
+            connection = getConnection();
+            connection.setAutoCommit(false);
+
             ptmt = connection.prepareStatement(queryString);
             ptmt.setInt(1, codi);
             ptmt.executeUpdate();
             connection.commit();
 
         } catch (SQLException e) {
-            connection.rollback();
             e.printStackTrace();
+            try{
+                if(connection!=null)
+                    connection.rollback();
+            }catch(SQLException se2){
+                se2.printStackTrace();
+            }
         } finally {
             closeDbConn();
         }

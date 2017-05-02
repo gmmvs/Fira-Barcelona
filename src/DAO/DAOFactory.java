@@ -11,7 +11,7 @@ public class DAOFactory {
     String driverClassName = "com.mysql.jdbc.Driver";
     String connectionUrl = "jdbc:mysql://localhost:3306/FiraBarcelona";
     String dbUser = "root";
-    String dbPwd = "root";
+    String dbPwd = "";
 
     private static DAOFactory DAOFactory = null;
 

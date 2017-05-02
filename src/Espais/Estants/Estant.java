@@ -11,7 +11,7 @@ public class Estant {
     private String Nom;
     private String Empresa;
     private HashMap<String,Producte> Productes = new HashMap<String,Producte>();
-    private double Ingressos = 0.00;
+    private double Ingressos = 0;
 
     public Estant() {
     }

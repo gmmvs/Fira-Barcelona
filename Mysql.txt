@@ -1,0 +1,100 @@
+CREATE DATABASE  IF NOT EXISTS `FiraBarcelona`
+USE `FiraBarcelona`;
+
+DROP TABLE IF EXISTS `AdministradorEmpresa`;
+
+CREATE TABLE `AdministradorEmpresa` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `User` varchar(45) DEFAULT NULL,
+  `Passwd` varchar(45) DEFAULT NULL,
+  `nomEmpresa` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `AdministradorFira`;
+
+CREATE TABLE `AdministradorFira` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `User` varchar(45) DEFAULT NULL,
+  `Passwd` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `Empresa`;
+
+CREATE TABLE `Empresa` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Nom` varchar(45) DEFAULT NULL,
+  `IdEstant` int(11) DEFAULT NULL,
+  `IdTreballador` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `Estant`;
+
+CREATE TABLE `Estant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idEmpresa` int(11) DEFAULT NULL,
+  `Nom` varchar(45) DEFAULT NULL,
+  `NomEmpresa` varchar(45) DEFAULT NULL,
+  `Ingressos` double DEFAULT NULL,
+  `idTreballador` int(11) DEFAULT NULL,
+  `idPlanta` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `Producte`;
+
+CREATE TABLE `Producte` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Nom` varchar(45) DEFAULT NULL,
+  `Preu` double DEFAULT NULL,
+  `idEstant` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `Treballador`;
+
+CREATE TABLE `Treballador` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Usuari` varchar(45) DEFAULT NULL,
+  `Passwd` varchar(45) DEFAULT NULL,
+  `idEmpresa` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `edifici` (
+  `id` int(11) NOT NULL,
+  `Nom` varchar(150) DEFAULT NULL,
+  `idRecinte` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `edifici`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `edifici`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `planta` (
+  `id` int(11) NOT NULL,
+  `Num` int(11) DEFAULT NULL,
+  `idEdifici` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `planta`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `planta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `recinte` (
+  `id` int(11) NOT NULL,
+  `Nom` varchar(150) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `recinte`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `recinte`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
