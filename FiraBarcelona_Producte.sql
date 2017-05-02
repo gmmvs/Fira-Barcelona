@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `Producte`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Producte` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `Nom` varchar(45) DEFAULT NULL,
   `Preu` int(11) DEFAULT NULL,
-  `IdEstant` int(11) DEFAULT NULL,
+  `idEstant` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
